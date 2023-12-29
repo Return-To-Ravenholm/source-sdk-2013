@@ -118,6 +118,8 @@ public:
 	void			InputTurnOff( inputdata_t &inputdata );
 	void			InputFadeAndRemove( inputdata_t &inputdata );
 
+	void			SetUnragdoll( inputdata_t &inputdata );
+
 #ifdef MAPBASE_VSCRIPT
 	HSCRIPT			ScriptGetRagdollObject( int iIndex );
 	int				ScriptGetRagdollObjectCount();
