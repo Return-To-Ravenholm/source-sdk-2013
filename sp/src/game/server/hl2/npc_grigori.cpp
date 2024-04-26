@@ -34,13 +34,13 @@ ConVar monk_headshot_freq( "monk_headshot_freq", "2" );
 //-----------------------------------------------------------------------------
 int ACT_MONK_GUN_IDLE;
 
-class CNPC_Monk : public CAI_PlayerAlly
+class CNPC_Grigori : public CAI_PlayerAlly
 {
-	DECLARE_CLASS( CNPC_Monk, CAI_PlayerAlly );
+	DECLARE_CLASS( CNPC_Grigori, CAI_PlayerAlly );
 
 public:
 
-	CNPC_Monk() {}
+	CNPC_Grigori() {}
 	void Spawn();
 	void Precache();
 
@@ -117,7 +117,7 @@ private:
 
 };
 
-BEGIN_DATADESC( CNPC_Monk )
+BEGIN_DATADESC( CNPC_Grigori )
 //					m_AssaultBehavior
 //					m_LeadBehavior
 #ifdef MAPBASE
@@ -134,11 +134,11 @@ BEGIN_DATADESC( CNPC_Monk )
 
 END_DATADESC()
 
-LINK_ENTITY_TO_CLASS( npc_monk, CNPC_Monk );
+LINK_ENTITY_TO_CLASS( npc_grigori, CNPC_Grigori );
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-bool CNPC_Monk::CreateBehaviors()
+bool CNPC_Grigori::CreateBehaviors()
 {
 	AddBehavior( &m_LeadBehavior );
 	AddBehavior( &m_AssaultBehavior );
@@ -151,7 +151,7 @@ bool CNPC_Monk::CreateBehaviors()
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-int CNPC_Monk::GetSoundInterests()
+int CNPC_Grigori::GetSoundInterests()
 {
 	return	SOUND_WORLD		|
 			SOUND_COMBAT	|
@@ -162,7 +162,7 @@ int CNPC_Monk::GetSoundInterests()
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CNPC_Monk::BuildScheduleTestBits( void )
+void CNPC_Grigori::BuildScheduleTestBits( void )
 {
 	// FIXME: we need a way to make scenes non-interruptible
 #if 0
@@ -191,7 +191,7 @@ void CNPC_Monk::BuildScheduleTestBits( void )
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-Class_T	CNPC_Monk::Classify( void )
+Class_T	CNPC_Grigori::Classify( void )
 {
 	return CLASS_PLAYER_ALLY_VITAL;
 }
@@ -203,7 +203,7 @@ ConVar npc_monk_use_old_acts( "npc_monk_use_old_acts", "1" );
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-Activity CNPC_Monk::NPC_TranslateActivity( Activity eNewActivity )
+Activity CNPC_Grigori::NPC_TranslateActivity( Activity eNewActivity )
 {
 	eNewActivity = BaseClass::NPC_TranslateActivity( eNewActivity );
 
@@ -297,7 +297,7 @@ Activity CNPC_Monk::NPC_TranslateActivity( Activity eNewActivity )
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CNPC_Monk::Precache()
+void CNPC_Grigori::Precache()
 {
 	PrecacheModel( "models/Monk.mdl" );
 	
@@ -311,7 +311,7 @@ void CNPC_Monk::Precache()
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CNPC_Monk::Spawn()
+void CNPC_Grigori::Spawn()
 {
 	Precache();
 
@@ -344,14 +344,14 @@ void CNPC_Monk::Spawn()
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-void CNPC_Monk::PainSound( const CTakeDamageInfo &info )
+void CNPC_Grigori::PainSound( const CTakeDamageInfo &info )
 {
 	SpeakIfAllowed( TLK_WOUND );
 }
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-void CNPC_Monk::DeathSound( const CTakeDamageInfo &info )
+void CNPC_Grigori::DeathSound( const CTakeDamageInfo &info )
 {
 	// Sentences don't play on dead NPCs
 	SentenceStop();
@@ -361,21 +361,21 @@ void CNPC_Monk::DeathSound( const CTakeDamageInfo &info )
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-WeaponProficiency_t CNPC_Monk::CalcWeaponProficiency( CBaseCombatWeapon *pWeapon )
+WeaponProficiency_t CNPC_Grigori::CalcWeaponProficiency( CBaseCombatWeapon *pWeapon )
 {
 	return WEAPON_PROFICIENCY_PERFECT;
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-Vector CNPC_Monk::GetActualShootPosition( const Vector &shootOrigin )
+Vector CNPC_Grigori::GetActualShootPosition( const Vector &shootOrigin )
 {
 	return BaseClass::GetActualShootPosition( shootOrigin );
 }
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-Vector CNPC_Monk::GetActualShootTrajectory( const Vector &shootOrigin )
+Vector CNPC_Grigori::GetActualShootTrajectory( const Vector &shootOrigin )
 {
 	if( GetEnemy() && GetEnemy()->Classify() == CLASS_ZOMBIE )
 	{
@@ -401,7 +401,7 @@ Vector CNPC_Monk::GetActualShootTrajectory( const Vector &shootOrigin )
 // Purpose: 
 // Input  : pEvent - 
 //-----------------------------------------------------------------------------
-void CNPC_Monk::HandleAnimEvent( animevent_t *pEvent )
+void CNPC_Grigori::HandleAnimEvent( animevent_t *pEvent )
 {
 	switch( pEvent->event )
 	{
@@ -427,7 +427,7 @@ void CNPC_Monk::HandleAnimEvent( animevent_t *pEvent )
 // enemies are very close.
 //-------------------------------------
 #define MONK_STAND_GROUND_HEIGHT	24.0
-bool CNPC_Monk::ShouldBackAway()
+bool CNPC_Grigori::ShouldBackAway()
 {
 	if( !GetEnemy() )
 		return false;
@@ -451,7 +451,7 @@ bool CNPC_Monk::ShouldBackAway()
 
 //-------------------------------------
 
-bool CNPC_Monk::IsValidEnemy( CBaseEntity *pEnemy )
+bool CNPC_Grigori::IsValidEnemy( CBaseEntity *pEnemy )
 {
 	if ( BaseClass::IsValidEnemy( pEnemy ) && GetActiveWeapon() )
 	{
@@ -467,7 +467,7 @@ bool CNPC_Monk::IsValidEnemy( CBaseEntity *pEnemy )
 
 //-------------------------------------
 
-int CNPC_Monk::TranslateSchedule( int scheduleType ) 
+int CNPC_Grigori::TranslateSchedule( int scheduleType ) 
 {
 	switch( scheduleType )
 	{
@@ -505,14 +505,14 @@ int CNPC_Monk::TranslateSchedule( int scheduleType )
 
 //-------------------------------------
 
-void CNPC_Monk::PrescheduleThink()
+void CNPC_Grigori::PrescheduleThink()
 {
 	BaseClass::PrescheduleThink();
 }	
 
 //-------------------------------------
 
-int CNPC_Monk::SelectSchedule()
+int CNPC_Grigori::SelectSchedule()
 {
 	if( HasCondition( COND_HEAR_DANGER ) )
 	{
@@ -539,7 +539,7 @@ int CNPC_Monk::SelectSchedule()
 
 //-------------------------------------
 
-void CNPC_Monk::StartTask( const Task_t *pTask )
+void CNPC_Grigori::StartTask( const Task_t *pTask )
 {
 	switch( pTask->iTask )
 	{
@@ -575,7 +575,7 @@ void CNPC_Monk::StartTask( const Task_t *pTask )
 }
 
 
-void CNPC_Monk::RunTask( const Task_t *pTask )
+void CNPC_Grigori::RunTask( const Task_t *pTask )
 {
 	switch( pTask->iTask )
 	{
@@ -608,7 +608,7 @@ void CNPC_Monk::RunTask( const Task_t *pTask )
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void CNPC_Monk::GatherConditions()
+void CNPC_Grigori::GatherConditions()
 {
 	BaseClass::GatherConditions();
 
@@ -672,7 +672,7 @@ void CNPC_Monk::GatherConditions()
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-bool CNPC_Monk::PassesDamageFilter( const CTakeDamageInfo &info )
+bool CNPC_Grigori::PassesDamageFilter( const CTakeDamageInfo &info )
 {
 	if ( info.GetAttacker()->ClassMatches( "npc_headcrab_black" ) || info.GetAttacker()->ClassMatches( "npc_headcrab_poison" ) )
 		return false;
@@ -682,7 +682,7 @@ bool CNPC_Monk::PassesDamageFilter( const CTakeDamageInfo &info )
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-void CNPC_Monk::OnKilledNPC( CBaseCombatCharacter *pKilled )
+void CNPC_Grigori::OnKilledNPC( CBaseCombatCharacter *pKilled )
 {
 	if ( !pKilled )
 	{
@@ -715,7 +715,7 @@ void CNPC_Monk::OnKilledNPC( CBaseCombatCharacter *pKilled )
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-int CNPC_Monk::SelectFailSchedule( int failedSchedule, int failedTask, AI_TaskFailureCode_t taskFailCode )
+int CNPC_Grigori::SelectFailSchedule( int failedSchedule, int failedTask, AI_TaskFailureCode_t taskFailCode )
 {
 	if( failedSchedule == SCHED_MONK_BACK_AWAY_FROM_ENEMY )
 	{
@@ -742,7 +742,7 @@ int CNPC_Monk::SelectFailSchedule( int failedSchedule, int failedTask, AI_TaskFa
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
-bool CNPC_Monk::IsJumpLegal( const Vector &startPos, const Vector &apex, const Vector &endPos ) const
+bool CNPC_Grigori::IsJumpLegal( const Vector &startPos, const Vector &apex, const Vector &endPos ) const
 {
 	if ( startPos.z - endPos.z < 0 )
 		return false;
@@ -752,7 +752,7 @@ bool CNPC_Monk::IsJumpLegal( const Vector &startPos, const Vector &apex, const V
 //-----------------------------------------------------------------------------
 // Every shot's a headshot. Useful for scripted Grigoris
 //-----------------------------------------------------------------------------
-void CNPC_Monk::InputPerfectAccuracyOn( inputdata_t &inputdata )
+void CNPC_Grigori::InputPerfectAccuracyOn( inputdata_t &inputdata )
 {
 	m_bPerfectAccuracy = true;
 }
@@ -760,7 +760,7 @@ void CNPC_Monk::InputPerfectAccuracyOn( inputdata_t &inputdata )
 //-----------------------------------------------------------------------------
 // Turn off perfect accuracy.
 //-----------------------------------------------------------------------------
-void CNPC_Monk::InputPerfectAccuracyOff( inputdata_t &inputdata )
+void CNPC_Grigori::InputPerfectAccuracyOff( inputdata_t &inputdata )
 {
 	m_bPerfectAccuracy = false;
 }
@@ -768,10 +768,10 @@ void CNPC_Monk::InputPerfectAccuracyOff( inputdata_t &inputdata )
 
 //-----------------------------------------------------------------------------
 //
-// CNPC_Monk Schedules
+// CNPC_Grigori Schedules
 //
 //-----------------------------------------------------------------------------
-AI_BEGIN_CUSTOM_NPC( npc_monk, CNPC_Monk )
+AI_BEGIN_CUSTOM_NPC( npc_monk, CNPC_Grigori )
 
 	DECLARE_ACTIVITY( ACT_MONK_GUN_IDLE )
 
